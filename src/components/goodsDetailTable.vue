@@ -178,6 +178,9 @@
 import common from "@/util/common.js";
 import * as qiniu from "qiniu-js";
 export default {
+  props:{
+    // productId:productId
+  },
   data() {
     return {
       normal:{
@@ -190,10 +193,12 @@ export default {
       sildeImgArr: [],
       contentImgArr: [],
       btnText: "编辑",
-      firstTime: false
+      firstTime: false,
+      productId:''
     };
   },
   mounted() {
+    console.log('props pid',this.productId)
     this.getDetail();
   },
   methods: {

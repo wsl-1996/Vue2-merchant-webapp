@@ -52,7 +52,7 @@ export default new Router({
       ]
     },
     {
-      path:'/goodsDetail',
+      path:'/goodsDetail/:productId',
       name:'商品详情',
       component:goodsDetail
     }, 

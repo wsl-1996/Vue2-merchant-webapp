@@ -5,7 +5,7 @@
             <mu-icon slot="bar-icon" value="arrow_back"></mu-icon>
             <span slot="bar-title" @click="goback">详情</span>
         </v-topbar>
-        <detailTable></detailTable>
+        <detailTable :product-id='productId'></detailTable>
 
     </div>
 </template>
@@ -19,9 +19,23 @@ export default {
     detailTable
   },
   methods: {
+    data(){
+        return{
+            productId: ''
+        }
+    },
     goback() {
+        
       this.$router.back(-1);
     }
-  }
+  },
+  mounted() {
+
+
+      this.productId= this.$route.params.productId
+        console.log('productId',this.productId)
+      
+  },
+  
 };
 </script>

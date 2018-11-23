@@ -95,8 +95,8 @@ export default {
         });
       });
     },
-    gotoDetail() {
-      this.$router.push("/goodsDetail");
+    gotoDetail(productId) {
+      this.$router.push("/goodsDetail/"+productId);
     },
     createGoods() {
       this.$router.push("/goodsDetail");
