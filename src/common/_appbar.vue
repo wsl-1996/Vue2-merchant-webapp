@@ -2,8 +2,8 @@
     <div class="topfixed">
         <mu-appbar style="width: 100%;" color="primary">
         <mu-button icon slot="left">
-            <mu-icon value="menu"></mu-icon>
-        </mu-button>{{Title}}
+            <slot name="bar-icon"></slot>
+        </mu-button><slot name="bar-title"></slot>
         <mu-button flat slot="right">LOGIN</mu-button>
     </mu-appbar>
     </div>
@@ -11,11 +11,7 @@
 
 <script>
     export default{
-        data(){
-            return {
-                Title:'商品管理'
-            }
-        }
+    
     }
 </script>
 

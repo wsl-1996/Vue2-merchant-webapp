@@ -1,17 +1,26 @@
 <template>
-    <mu-container>
-  <mu-paper :z-depth="1">
-    <mu-data-table :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="list">
-      <template slot-scope="scope">
-        <td  @click="gotoDetail"><img :src="scope.row.img" class="img-content"/></td>
-        <td class="is-right">{{scope.row.name}}</td>
-        <td class="is-right">{{scope.row.price}}</td>
-        <td class="is-right">{{scope.row.type}}</td>
-        <td class="is-right">{{scope.row.onlineTime}}</td>
-      </template>
-    </mu-data-table>
-  </mu-paper>
-</mu-container>
+  <mu-container >
+    <mu-row class="row-container">
+      <mu-col span='3' offset='9'>
+        <mu-button color="primary" @click="createGoods">
+          <mu-icon left value="grade"></mu-icon>
+          创建商品
+        </mu-button>
+      </mu-col>
+    </mu-row>
+
+    <mu-paper class="paper-container" :z-depth="1">
+      <mu-data-table :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="datalist">
+        <template slot-scope="scope">
+          <td @click="gotoDetail(scope.row.productid)"><img :src="scope.row.img" class="img-content" /></td>
+          <td class="is-right">{{scope.row.name}}</td>
+          <td class="is-right">{{scope.row.price}}</td>
+          <td class="is-right">{{scope.row.type}}</td>
+          <td class="is-right">{{scope.row.onlineTime}}</td>
+        </template>
+      </mu-data-table>
+    </mu-paper>
+  </mu-container>
 </template>
 <script>
 export default {
@@ -52,46 +61,15 @@ export default {
           sortable: true
         }
       ],
-      list: [
+      datalist: [
         {
           img:
             "http://47.99.78.252:8080/ketuan/imagesDir/36c8afde4fcf421f8f062b457ed58fb1.png",
           name: "alpha蛋智能语音机器人",
-          price:'123',
-          type:'上线中',
-          onlineTime:'2018/7/8'
-        },
-        {
-          img:
-            "http://47.99.78.252:8080/ketuan/imagesDir/0183bd3adf244ea7954d2c50cdb83fa9.png",
-          name: "alpha蛋智能语音机器人",
-          price:'124',
-          type:'上线中',
-          onlineTime:'2018/7/8'
-        },
-        {
-          img:
-            "http://47.99.78.252:8080/ketuan/imagesDir/6f5e76dce64941ffb6a7f8beb2ce93f5.png",
-          name: "alpha蛋智能语音机器人",
-          price:'1256',
-          type:'上线中',
-          onlineTime:'2018/7/8'
-        },
-        {
-          img:
-            "http://47.99.78.252:8080/ketuan/imagesDir/36c8afde4fcf421f8f062b457ed58fb1.png",
-          name: "alpha蛋智能语音机器人",
-          price:'127',
-          type:'上线中',
-          onlineTime:'2018/7/8'
-        },
-        {
-          img:
-            "http://47.99.78.252:8080/ketuan/imagesDir/36c8afde4fcf421f8f062b457ed58fb1.png",
-          name: "alpha蛋智能语音机器人",
-          price:'127',
-          type:'上线中',
-          onlineTime:'2018/7/8'
+          price: "123",
+          type: "上线中",
+          onlineTime: "2018/7/8",
+          productid: "001"
         }
       ]
     };
@@ -102,15 +80,42 @@ export default {
         (a, b) => (order === "asc" ? a[name] - b[name] : b[name] - a[name])
       );
     },
-    gotoDetail(){
-        this.$router.push('goodsDetail')
+    getProductList() {
+      this.axios.get("/static/mock/goodsList.json").then(response => {
+        var goodsList = response.data.data.products;
+        goodsList.forEach(element => {
+          this.datalist.push({
+            img:element.productFistImg,
+            name: element.productName,
+            price: element.price,
+            type: '上线中',
+            onlineTime: element.onlineTime,
+            productid:element.id
+          });
+        });
+      });
+    },
+    gotoDetail() {
+      this.$router.push("/goodsDetail");
+    },
+    createGoods() {
+      this.$router.push("/goodsDetail");
     }
-  }
+  },
+  mounted() {
+    this.getProductList()
+  },
 };
 </script>
 <style>
- .img-content{
-     width: 100px;
-     height: 100px;
- }
+.img-content {
+  width: 100px;
+  height: 100px;
+}
+.row-container {
+  margin: 30px;
+}
+.paper-container{
+  margin: 60px 0;
+}
 </style>

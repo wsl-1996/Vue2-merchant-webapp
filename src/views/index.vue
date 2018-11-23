@@ -1,6 +1,9 @@
 <template>
     <div>
-       <v-topbar></v-topbar>
+       <v-topbar>
+           <mu-icon slot="bar-icon" value="menu"></mu-icon>
+            <span slot="bar-title">topbar</span>
+       </v-topbar>
        <v-navigation></v-navigation>
        <router-view></router-view>
     </div>
