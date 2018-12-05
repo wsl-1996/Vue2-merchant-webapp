@@ -1,7 +1,7 @@
 <template>
   <mu-container >
     <mu-row class="row-container">
-      <mu-col span='3' offset='9'>
+      <mu-col span='6' offset='7'>
         <mu-button color="primary" @click="createGoods">
           <mu-icon left value="grade"></mu-icon>
           创建商品
@@ -61,17 +61,7 @@ export default {
           sortable: true
         }
       ],
-      datalist: [
-        {
-          img:
-            "http://47.99.78.252:8080/ketuan/imagesDir/36c8afde4fcf421f8f062b457ed58fb1.png",
-          name: "alpha蛋智能语音机器人",
-          price: "123",
-          type: "上线中",
-          onlineTime: "2018/7/8",
-          productid: "001"
-        }
-      ]
+      datalist: []
     };
   },
   methods: {
@@ -81,7 +71,17 @@ export default {
       );
     },
     getProductList() {
-      this.axios.get("/static/mock/goodsList.json").then(response => {
+      this.axios
+          .get(
+            this.GLOBAL.webappServerSrc+"/WebAppService/products/getgoodslist",
+            {
+              params: {
+                merchantid: localStorage.getItem('merchantId')
+              }
+            }
+          )
+      // this.axios.get("/static/mock/goodsList.json")
+      .then(response => {
         var goodsList = response.data.data.products;
         goodsList.forEach(element => {
           this.datalist.push({
@@ -99,11 +99,12 @@ export default {
       this.$router.push("/goodsDetail/"+productId);
     },
     createGoods() {
-      this.$router.push("/goodsDetail");
+      this.$router.push("/goodsDetail/-1");
     }
   },
   mounted() {
     this.getProductList()
+    console.log(this.GLOBAL.webappServerSrc)
   },
 };
 </script>
@@ -113,9 +114,9 @@ export default {
   height: 100px;
 }
 .row-container {
-  margin: 30px;
+  margin-top: 40px;
 }
 .paper-container{
-  margin: 60px 0;
+  margin: 10px 0 60px 0;
 }
 </style>

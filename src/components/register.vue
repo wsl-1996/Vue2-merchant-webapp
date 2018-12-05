@@ -1,51 +1,91 @@
 <template>
-    <div>
-        <h1>register</h1>
-        <mu-container>
-  <mu-form ref="form" :model="validateForm" class="mu-demo-form">
-    <mu-form-item label="手机号" help-text="帮助文字" prop="username" :rules="usernameRules">
-      <mu-text-field v-model="validateForm.username" prop="username"></mu-text-field>
-    </mu-form-item>
-    <mu-form-item label="验证码" prop="password" :rules="passwordRules">
-        <mu-text-field  v-model="validateForm.password" prop="password"></mu-text-field>
-         <mu-button>获取验证码</mu-button>
-    </mu-form-item>
+  <div class="reg-container">
+    <h1>我的信息</h1>
 
-    <mu-form-item>
-      <mu-button color="primary" @click="register">注册</mu-button>
-    </mu-form-item>
-  </mu-form>
-</mu-container>
-    </div>
+    <mu-row>
+      <mu-col span='3'>商家名称</mu-col>
+      <mu-col span='9'>
+        <mu-text-field v-model="name"></mu-text-field>
+      </mu-col>
+    </mu-row>
+
+    <mu-row>
+      <mu-col span='3'>地址</mu-col>
+      <mu-col span='9'>
+        <mu-text-field v-model="address"></mu-text-field>
+      </mu-col>
+    </mu-row>
+
+    <mu-row>
+      <mu-col span='3'>手机号</mu-col>
+      <mu-col span='9'>
+        <mu-text-field v-model="phone"></mu-text-field>
+      </mu-col>
+    </mu-row>
+
+    <mu-row>
+      <mu-col span='3'>简要描述</mu-col>
+      <mu-col span='9'>
+        <mu-text-field v-model="discription"></mu-text-field>
+      </mu-col>
+    </mu-row>
+
+    <mu-row>
+      <mu-col span='3'>邮箱</mu-col>
+      <mu-col span='9'>
+        <mu-text-field v-model="email"></mu-text-field>
+      </mu-col>
+    </mu-row>
+    <mu-row>
+      <mu-col offset='8'>
+        <mu-button
+          color="primary"
+          flat
+          @click="commitReg"
+        >提交</mu-button>
+
+      </mu-col>
+    </mu-row>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      usernameRules: [
-        { validate: val => !!val, message: "必须填写手机号" },
-        { validate: val => val.length = 11, message: "手机号长度为11位" }
-      ],
-      passwordRules: [
-        { validate: val => !!val, message: "必须填写验证码" },
 
-      ],
-      validateForm: {
-        username: "",
-        password: "",
-      }
+        name: "",
+        address: "",
+        phone: "",
+        discription: "",
+        email: ""
+      
     };
   },
   methods: {
-    register() {
-        this.$router.push('/')
-    },
-  }
+    commitReg(){
+      this.axios
+        .get(this.GLOBAL.webappServerSrc + "/WebAppService/my/getmyinfo", {
+          params: {
+            merchantid: localStorage.getItem("merchantId"),
+            page: "0"
+          },
+          headers: {
+            sessionid: localStorage.getItem("sessionId")
+          }
+        })
+        .then(res => {
+          console.log("getMyInfo res", res.data);
+          this.merchantInfo = res.data.data.merchant;
+        });
+    } }
 };
 </script>
 <style>
 .mu-demo-form {
   width: 100%;
   max-width: 460px;
+}
+.reg-container {
+  margin-bottom: 60px;
 }
 </style>

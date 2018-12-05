@@ -1,10 +1,7 @@
 <template>
 
     <div>
-        <v-topbar>
-            <mu-icon slot="bar-icon" value="arrow_back"></mu-icon>
-            <span slot="bar-title" @click="goback">详情</span>
-        </v-topbar>
+        <v-topbar :iconvalue='iconvalue' :barTitle='barTitle'></v-topbar>
         <detailTable :product-id='productId'></detailTable>
 
     </div>
@@ -18,22 +15,21 @@ export default {
     "v-topbar": appbar,
     detailTable
   },
-  methods: {
-    data(){
+  data(){
         return{
-            productId: ''
+          iconvalue:'chevron_left',
+          barTitle:'详情',
+          productId: this.$route.params.productId
         }
     },
+  methods: {
+    
     goback() {
         
       this.$router.back(-1);
     }
   },
   mounted() {
-
-
-      this.productId= this.$route.params.productId
-        console.log('productId',this.productId)
       
   },
   

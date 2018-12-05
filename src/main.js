@@ -7,7 +7,11 @@ import MuseUI from 'muse-ui'
 import axios from 'axios'
 import Vueaxios from 'vue-axios'
 import 'muse-ui/dist/muse-ui.css';
-
+import global_ from '@/components/Global.vue'
+import webSocket from '@/util/webSocket.js'
+import Message from 'muse-ui-message'
+Vue.use(Message);
+Vue.prototype.GLOBAL= global_
 Vue.use(MuseUI)
 Vue.use(Vueaxios,axios)
 Vue.config.productionTip = false
@@ -17,5 +21,10 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  data(){
+    return{
+      webSocket:webSocket
+    }
+  }
 })

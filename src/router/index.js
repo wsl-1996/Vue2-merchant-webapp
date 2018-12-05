@@ -9,6 +9,8 @@ import customservice from '@/views/customservice'
 import my from '@/views/my'
 import goodsDetail from '@/views/goodsDetail'
 import orderDetail from '@/views/orderDetail'
+import dialog from '@/views/dialog'
+import userSettings from '@/views/userSettings'
 Vue.use(Router)
 
 export default new Router({
@@ -28,6 +30,7 @@ export default new Router({
       path:'/index',
       name:'index',
       component:index,
+      redirect:'/goodsmanager',
       children:[
           {
               path:'/goodsmanager',
@@ -57,9 +60,19 @@ export default new Router({
       component:goodsDetail
     }, 
     {
-      path:'/orderDetail',
-      name:'商品详情',
+      path:'/orderDetail/:orderId',
+      name:'订单详情',
       component:orderDetail
-    }   
+    },
+    {
+      path:'/dialog/:userId',
+      name:'对话框',
+      component:dialog  
+    },
+    {
+      path:'/userSettings',
+      name:'用户设置',
+      component:userSettings
+    },     
   ]
 })

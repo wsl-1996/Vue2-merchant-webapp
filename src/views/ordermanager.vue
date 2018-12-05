@@ -1,18 +1,18 @@
 <template>
-    <div>
-        <h1>order-manager</h1>
-        <mu-paper>
-            <mu-data-table :columns='columns' :sort.sync="sort"  :data='datalist'>
-                <template slot-scope="scope">
-                    <td @click="gotoOrderDetail">{{scope.row.orderId}}</td>
-                    <td>{{scope.row.userId}}</td>
-                    <td>{{scope.row.sendAddress}}</td>
-                    <td>{{scope.row.orderTime}}</td>
-                    <td>{{scope.row.orderState}}</td>
-                </template>
-            </mu-data-table>
-        </mu-paper>
-    </div>
+  <div>
+    <h1>order-manager</h1>
+    <mu-paper>
+      <mu-data-table :columns='columns' :sort.sync="sort" :data='datalist'>
+          <template slot-scope="scope">
+            <td  @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.orderId}}</td>
+            <td @click="testclick">{{scope.row.userId}}</td>
+            <td>{{scope.row.sendAddress}}</td>
+            <td>{{scope.row.orderTime}}</td>
+            <td>{{scope.row.orderState}}</td>
+          </template>
+      </mu-data-table>
+    </mu-paper>
+  </div>
 </template>
 
 <script>
@@ -36,9 +36,12 @@ export default {
   methods: {
     getOrderList() {
       this.axios
-        .get(
-          "http://192.168.0.104:8080/WebAppService/orders/getorderlist?page=0&merchantid=b9ffe29719eb4bcbb9432c0085c7f4e1"
-        )
+        .get(this.GLOBAL.webappServerSrc + "/WebAppService/orders/getorderlist", {
+          params: {
+            page: 0,
+            merchantid: localStorage.getItem('merchantId')
+          }
+        })
         .then(response => {
           var orderList = response.data.data.orders;
           console.log("orderlist", orderList);
@@ -48,14 +51,19 @@ export default {
               userId: element.USER_id,
               sendAddress: element.send_address,
               orderTime: element.order_time,
-              orderState:element.state
+              orderState: element.state
             });
           });
           console.log("datalist", this.datalist);
         });
     },
-    gotoOrderDetail(){
-        this.$router.push('orderDetail')
+    gotoOrderDetail(id) {
+      console.log("11111");
+      this.$router.push("/orderDetail/"+id);
+    },
+    testclick(){
+      console.log('22222');
+
     }
   },
   mounted() {
