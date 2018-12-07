@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>oredr detail{{this.orderId}}</h1>
-
+    <v-topbar iconvalue='chevron_left' barTitle='订单详情'></v-topbar>
     <mu-row
       gutter
       class="row-container"
@@ -231,11 +230,13 @@
 </template>
 
 <script>
+import topbar from '@/common/_appbar.vue'
 import snackbar from "@/common/snackbar";
 import expressSort from "@/../static/ExpressCompanyTable.js";
 export default {
   components: {
-    "v-snackbar": snackbar
+    "v-snackbar": snackbar,
+    "v-topbar":topbar
   },
   data() {
     return {

@@ -11,6 +11,7 @@ import goodsDetail from '@/views/goodsDetail'
 import orderDetail from '@/views/orderDetail'
 import dialog from '@/views/dialog'
 import userSettings from '@/views/userSettings'
+import withdrawCash from '@/views/withdrawCash'
 Vue.use(Router)
 
 export default new Router({
@@ -73,6 +74,11 @@ export default new Router({
       path:'/userSettings',
       name:'用户设置',
       component:userSettings
-    },     
+    }, 
+   {
+      path:'/withdrawCash',
+      name:'提现',
+      component:withdrawCash
+    }, 
   ]
 })

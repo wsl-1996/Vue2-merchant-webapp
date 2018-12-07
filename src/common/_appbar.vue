@@ -1,10 +1,10 @@
 <template>
     <div class="topfixed">
-        <mu-appbar style="width: 100%;" color="primary">
+        <mu-appbar style="width: 100%;" color="#00bcd4">
         <mu-button icon slot="left" @click="$router.go(-1)">
             <mu-icon :value='iconvalue'></mu-icon>
         </mu-button><span>{{barTitle}}</span>
-        <mu-button flat slot="right">xxxx</mu-button>
+        <mu-button flat slot="right">   </mu-button>
     </mu-appbar>
     </div>
 </template>

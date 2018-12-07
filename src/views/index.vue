@@ -1,9 +1,8 @@
 <template>
     <div>
        <v-topbar :iconvalue='iconvalue' :barTitle='barTitle'></v-topbar>
-       <v-navigation></v-navigation>
        <router-view></router-view>
-       <v-snackbar :snActive='true' snType="error" :snText='sstext'></v-snackbar>
+       <v-navigation></v-navigation>
     </div>
 </template>
 
@@ -21,8 +20,7 @@
         data(){
             return{
                 iconvalue:'chevron_left',
-                barTitle:'webApp',
-                sstext:'你好呀呀呀 ，这是首页'
+                barTitle:'商家后台',
             }
         }
     }

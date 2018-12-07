@@ -1,8 +1,9 @@
 <template>
   <mu-appbar class="topfixed">
-      <mu-avatar slot="left" src='./../../static/avatar/1.png' @click="$router.go(-1)"></mu-avatar>
+      <mu-button slot="left" icon @click="$router.go(-1)">
+        <mu-icon value='chevron_left'></mu-icon>
+      </mu-button>
       <div slot="default"><div>message</div></div>
-      <mu-icon slot="right" value='search'></mu-icon>
   </mu-appbar>
 </template>
 

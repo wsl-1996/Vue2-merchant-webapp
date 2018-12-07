@@ -1,9 +1,9 @@
 <template>
-  <mu-container >
+  <div>
     <mu-row class="row-container">
-      <mu-col span='6' offset='7'>
-        <mu-button color="primary" @click="createGoods">
-          <mu-icon left value="grade"></mu-icon>
+      <mu-col span='12'>
+        <mu-button color="#26c6da" @click="createGoods" full-width>
+          <mu-icon left value="add_circle_outline"></mu-icon>
           创建商品
         </mu-button>
       </mu-col>
@@ -20,9 +20,10 @@
         </template>
       </mu-data-table>
     </mu-paper>
-  </mu-container>
+  </div>
 </template>
 <script>
+import utils from '@/util/utils.js'
 export default {
   data() {
     return {
@@ -56,7 +57,7 @@ export default {
         {
           title: "创建日期",
           name: "onlineTime",
-          width: 126,
+          width: 115,
           align: "center",
           sortable: true
         }
@@ -89,7 +90,7 @@ export default {
             name: element.productName,
             price: element.price,
             type: '上线中',
-            onlineTime: element.onlineTime,
+            onlineTime: utils.timestampToTime(element.onlineTime),
             productid:element.id
           });
         });

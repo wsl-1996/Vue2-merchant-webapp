@@ -2,10 +2,10 @@
     <footer>
     
         <mu-container class="bottomfixed">
-        <mu-bottom-nav :value='btnnavi'>
-            <mu-bottom-nav-item title="首页" icon="home" to="/goodsmanager" value='a'></mu-bottom-nav-item>
-            <mu-bottom-nav-item title="订单" icon="home" to="/ordermanager" value='b'></mu-bottom-nav-item>
-            <mu-bottom-nav-item title="客服" icon="send" to="/customservice" value='c'></mu-bottom-nav-item>
+        <mu-bottom-nav :value='btnnavi' shift color='#00bcd4' full-width>
+            <mu-bottom-nav-item title="首页" icon="home" to="/goodsmanager" value='a' ></mu-bottom-nav-item>
+            <mu-bottom-nav-item title="订单" icon="assignment" to="/ordermanager" value='b'></mu-bottom-nav-item>
+            <mu-bottom-nav-item title="客服" icon="record_voice_over" to="/customservice" value='c'></mu-bottom-nav-item>
             <mu-bottom-nav-item title="我的" icon="home" to="/my" value='d'></mu-bottom-nav-item>
         </mu-bottom-nav>
     </mu-container>
@@ -32,5 +32,6 @@
     left: 0;
     bottom: 0;
     z-index: 1000;
+    background-color: #00bcd4
   }
 </style>

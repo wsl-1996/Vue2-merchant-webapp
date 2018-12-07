@@ -15,7 +15,8 @@ ws.onclose = function(evt) {
 };
 
 ws.onmessage = function(evt) {
-	var msgStore,tempMsg,msgFrom
+	var msgStore,tempMsg,msgFrom,msgList,tempmsgList
+	
 	console.log("ws.js this is " ,this);
 	console.log("Received Message: " , evt.data);
 	tempMsg=JSON.parse(evt.data)
@@ -30,6 +31,34 @@ ws.onmessage = function(evt) {
 	console.log('msgStore',msgStore)
 	localStorage.setItem('msgStore'+msgFrom,JSON.stringify(msgStore))
 	console.log('缓存消息：',JSON.parse(localStorage.getItem('msgStore'+msgFrom)))
+	
+
+	msgList = JSON.parse(localStorage.getItem('msgList'))
+	if(msgList == null){
+		msgList = []
+	}
+	tempmsgList = {
+		avatar: tempMsg.headOwner,
+        userName: "用户"+tempMsg.messageFrom,
+        sendTime: tempMsg.createTime,
+		userId: tempMsg.messageFrom,
+		lastContent:tempMsg.messageContent,
+		isRead: false
+	}
+	var existlist = false
+	for(var item of msgList){
+		if(item.userId == tempMsg.messageFrom){
+			item.sendTime = tempMsg.createTime
+			item.lastContent = tempMsg.messageContent
+			item.isRead = false
+			existlist = true
+		}		
+	}
+	if(!existlist){
+		msgList.push(tempmsgList)
+		existlist = false
+	}
+	localStorage.setItem('msgList',JSON.stringify(msgList))
 };
 
 export default {

@@ -15,25 +15,7 @@
         ></mu-text-field>
       </mu-col>
     </mu-row>
-    <mu-row>
-      <mu-col span='3'><span>手机号验证</span></mu-col>
-      <mu-col span='9'>
-        <mu-text-field
-          type='number'
-          v-model="phone"
-        ></mu-text-field>
-      </mu-col>
-    </mu-row>
-    <mu-row>
-      <mu-col span='3'><span>验证码</span></mu-col>
-      <mu-col span='9'>
-        <mu-text-field
-          v-model="verifycode"
-          class="text-field"
-        ></mu-text-field>
-        <mu-button @click="getIdcode">获取验证码</mu-button>
-      </mu-col>
-    </mu-row>
+    <v-validatecode v-on:listenchild="showchilddata"></v-validatecode>
     <mu-row>
       <mu-col></mu-col>
       <mu-button @click="commitmodify">提交</mu-button>
@@ -43,7 +25,11 @@
 
 <script>
 import md5 from "@/util/md5.js";
+import validatecode from "@/components/validateCode";
 export default {
+  components: {
+    "v-validatecode": validatecode
+  },
   data() {
     return {
       account: "",
@@ -115,7 +101,12 @@ export default {
               console.log("发送验证码失败");
             }
           });
-    }
+    },
+    showchilddata(data) {
+      console.log("data", data);
+      this.validatecode = data.code;
+      this.phone= data.phone
+}
   },
   mounted() {}
 };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :style="{backgroundImage: `url('http://resource.skqtec.com/product_75ShPSkW7sae')`}">
+    <div class="div-bgpaper">
       <mu-row>
         <mu-col offset='10'>
           <mu-button
@@ -11,14 +11,14 @@
           </mu-button>
         </mu-col>
       </mu-row>
-      <p>{{merchantInfo.name}}</p>
+      <p class="namecontent">{{merchantInfo.name}}</p>
       <mu-row justify-content="center">
         <mu-avatar
           size='56'
           text-color="#2962ff"
           color="#90caf9"
         >
-          {{merchantInfo.name.substring(0,1)}}
+          <img :src="merchantInfo.headImg" alt="">
         </mu-avatar>
       </mu-row>
       <mu-tabs
@@ -41,6 +41,7 @@
       v-if="active1 === 0"
     >
       <v-account
+        :name='merchantInfo.name'
         :balance='merchantInfo.balance'
         :phone='merchantInfo.phone'
         :discription='merchantInfo.discription'
@@ -82,7 +83,8 @@ export default {
         accoutpass: "",
         discription: "",
         email: "",
-        balance: ""
+        balance: "",
+        headImg:''
       }
     };
   },
@@ -121,5 +123,16 @@ export default {
 .tab-content {
   margin-top: 30px;
   background: rgba(255, 255, 255, 0.1);
+}
+
+.div-bgpaper{
+  background-color: #4dd0e1;
+  margin-top: -10px
+}
+.namecontent{
+  color: #01579b;
+  font-size: 20px;
+  font-family:"幼圆";
+  font-weight: 700
 }
 </style>

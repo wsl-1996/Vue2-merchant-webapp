@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>customservice-manager</h1>
         <msgAppbar></msgAppbar>
         <msgList></msgList>
     </div>
