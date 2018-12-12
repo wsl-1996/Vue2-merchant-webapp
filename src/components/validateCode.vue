@@ -22,16 +22,17 @@
 
 <script>
 export default {
-  props:['phone'],
    data(){
        return{
            idCodeType:false,
            code:'',
-           IdCodeTime:''
+           IdCodeTime:'',
+           phone:localStorage.getItem('myPhone')
        }
    },
   methods: {
     getIdcode() {
+      console.log('jiaoyn',this.phone)
       if (this.phone)
         this.axios
           .get(

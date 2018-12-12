@@ -1,22 +1,48 @@
 <template>
   <div>
     <mu-row class="row-container">
-      <mu-col span='12'>
-        <mu-button color="#26c6da" @click="createGoods" full-width>
-          <mu-icon left value="add_circle_outline"></mu-icon>
+      <mu-col span='9'>
+        <mu-button
+        class="tips-btn"
+          color="#26c6da"
+          @click="createGoods"
+          full-width
+        >
+          <mu-icon
+            left
+            value="add_circle_outline"
+          ></mu-icon>
           创建商品
         </mu-button>
       </mu-col>
+      
+      <mu-col span='3'>
+    <mu-button class="tips-btn" @click="show1=!show1" color='#4dd0e1' flat>Tips</mu-button></mu-col>
     </mu-row>
-
-    <mu-paper class="paper-container" :z-depth="1">
-      <mu-data-table :columns="columns" :sort.sync="sort" @sort-change="handleSortChange" :data="datalist">
+    <mu-row>
+    </mu-row>
+      <mu-slide-left-transition>
+      <div class="mu-transition-box mu-primary-color mu-inverse" v-show="show1">可左右滑动，浏览全部数据</div>
+    </mu-slide-left-transition>
+    <mu-paper
+      class="paper-container"
+      :z-depth="1"
+    >
+      <mu-data-table
+        :columns="columns"
+        :sort.sync="sort"
+        @sort-change="handleSortChange"
+        :data="datalist"
+      >
         <template slot-scope="scope">
-          <td @click="gotoDetail(scope.row.productid)"><img :src="scope.row.img" class="img-content" /></td>
-          <td class="is-right">{{scope.row.name}}</td>
-          <td class="is-right">{{scope.row.price}}</td>
-          <td class="is-right">{{scope.row.type}}</td>
-          <td class="is-right">{{scope.row.onlineTime}}</td>
+          <td @click="gotoDetail(scope.row.productid)"><img
+              :src="scope.row.img"
+              class="img-content"
+            /></td>
+          <td class="is-right" @click="gotoDetail(scope.row.productid)">{{scope.row.name}}</td>
+          <td class="is-right" @click="gotoDetail(scope.row.productid)">{{scope.row.price}}</td>
+          <td class="is-right" @click="gotoDetail(scope.row.productid)">{{scope.row.type}}</td>
+          <td class="is-right" @click="gotoDetail(scope.row.productid)">{{scope.row.onlineTime}}</td>
         </template>
       </mu-data-table>
     </mu-paper>
@@ -27,6 +53,7 @@ import utils from '@/util/utils.js'
 export default {
   data() {
     return {
+      show1:false,
       sort: {
         name: "",
         order: "asc"
@@ -67,8 +94,21 @@ export default {
   },
   methods: {
     handleSortChange({ name, order }) {
-      this.list = this.list.sort(
-        (a, b) => (order === "asc" ? a[name] - b[name] : b[name] - a[name])
+      console.log('list is ?',this.datalist)
+      this.datalist = this.datalist.sort(
+        (a, b) => {
+          console.log('a,b',a[name])
+          
+          if( typeof a[name] == 'string' && a[name].search('线')!=-1){
+            return (order === "asc" ? a.s_type - b.s_type : b.s_type - a.s_type)
+          }else if( typeof a[name] == 'string' && a[name].search('-')!=-1){
+             return (order === "asc" ? a.s_onlineTime - b.s_onlineTime : b.s_onlineTime - a.s_onlineTime)
+          }
+          
+          else{
+            return (order === "asc" ? a[name] - b[name] : b[name] - a[name])
+          }
+        }
       );
     },
     getProductList() {
@@ -81,7 +121,6 @@ export default {
               }
             }
           )
-      // this.axios.get("/static/mock/goodsList.json")
       .then(response => {
         var goodsList = response.data.data.products;
         goodsList.forEach(element => {
@@ -89,12 +128,24 @@ export default {
             img:element.productFistImg,
             name: element.productName,
             price: element.price,
-            type: '上线中',
+            type: setProductState(element.productState),
             onlineTime: utils.timestampToTime(element.onlineTime),
-            productid:element.id
+            productid:element.id,
+            s_type : element.productState,
+            s_onlineTime : element.onlineTime
           });
         });
       });
+      function setProductState(state){
+        switch(state){
+                case 0:
+                return '未上线' ;break;
+                case 1:
+                return '已上线' ;break;
+                case 2:
+                return '已下线' ;break;
+      }
+    }
     },
     gotoDetail(productId) {
       this.$router.push("/goodsDetail/"+productId);
@@ -117,7 +168,22 @@ export default {
 .row-container {
   margin-top: 40px;
 }
-.paper-container{
+.paper-container {
   margin: 10px 0 60px 0;
+}
+
+.tips-btn{
+  margin: 5px 0
+}
+.mu-transition-box {
+  min-width: 200px;
+  height: 100px;
+  margin-right: 16px;
+  border-radius: 4px;
+  padding: 0 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #4dd0e1
 }
 </style>

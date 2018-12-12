@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login'
-import register from '@/components/register'
 import index from '@/views/index'
 import goodsmanager from '@/views/goodsmanager'
 import ordermanager from '@/views/ordermanager'
@@ -12,6 +11,9 @@ import orderDetail from '@/views/orderDetail'
 import dialog from '@/views/dialog'
 import userSettings from '@/views/userSettings'
 import withdrawCash from '@/views/withdrawCash'
+import modifyUser from '@/views/modifyUser'
+import modifyInfo from '@/views/modifyInfo'
+
 Vue.use(Router)
 
 export default new Router({
@@ -20,12 +22,6 @@ export default new Router({
       path: '/',
       name: 'login',
       component: login
-    },
-
-    {
-    path:'/register',
-    name:'registerName',
-    component:register
     },
     {
       path:'/index',
@@ -79,6 +75,16 @@ export default new Router({
       path:'/withdrawCash',
       name:'提现',
       component:withdrawCash
+    }, 
+    {
+      path:'/modifyUser',
+      name:'修改用户名',
+      component:modifyUser
+    }, 
+    {
+      path:'/modifyInfo',
+      name:'修改用户信息',
+      component:modifyInfo
     }, 
   ]
 })

@@ -1,5 +1,5 @@
 <template>
-  <div class="div-container">
+  <div class="div-margin">
 
     <mu-expansion-panel>
       <div slot="header">我的账户信息</div>
@@ -179,7 +179,7 @@ export default {
 };
 </script>
 <style>
-.div-container {
+.div-margin {
   margin-bottom: 60px;
 }
 .date-span {

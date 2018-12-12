@@ -32,7 +32,7 @@
       >
         <mu-tab>我的账户</mu-tab>
         <mu-tab>开通服务</mu-tab>
-        <mu-tab>填写信息</mu-tab>
+        <mu-tab>我的位置</mu-tab>
       </mu-tabs>
     </div>
 
@@ -58,22 +58,25 @@
       class="demo-text"
       v-if="active1 === 2"
     >
-      <v-register></v-register>
+    <mu-button @click="getlocationpoint">获取位置</mu-button>
+    <p>经纬度：</p>
+    <p>{{latitude}}</p>
+    <p>{{longitude}}</p>
     </div>
   </div>
 </template>
 
 <script>
 import account from "@/components/account";
-import register from "@/components/register";
 export default {
   components: {
     "v-account": account,
-    "v-register": register
   },
   data() {
     return {
       active1: 0,
+       latitude:'',
+        longitude:'',
       merchantInfo: {
         id: "",
         name: "",
@@ -84,7 +87,8 @@ export default {
         discription: "",
         email: "",
         balance: "",
-        headImg:''
+        headImg:'',
+       
       }
     };
   },
@@ -103,11 +107,25 @@ export default {
         .then(res => {
           console.log("getMyInfo res", res.data);
           this.merchantInfo = res.data.data.merchant;
+          localStorage.setItem('myPhone',this.merchantInfo.phone)
         });
     },
     gointoSettings() {
       this.$router.push("userSettings");
-    }
+    },
+
+  getlocationpoint:function () {
+      if (navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(
+              function (position) {
+                 this.latitude = position.coords.latitude;//获取纬度
+                 this.longitude = position.coords.longitude;//获取经度
+                 console.log('经纬度',this.latitude,this.longitude)
+              });
+      }else{
+         this.$alert("不支持定位功能");
+      }
+  }
   },
   mounted() {
     this.getMyInfo();

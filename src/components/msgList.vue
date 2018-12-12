@@ -12,8 +12,7 @@
               </mu-avatar>
             </mu-list-item-action>
             <mu-list-item-content>
-              <mu-list-item-title class="content">{{item.userName}}</mu-list-item-title>
-              
+              <mu-list-item-title class="content">{{item.userName}}</mu-list-item-title>              
               <mu-list-item-sub-title class="content">{{item.lastContent}}</mu-list-item-sub-title>
               <mu-list-item-sub-title class="content">{{item.sendTime}}</mu-list-item-sub-title>
             </mu-list-item-content>
@@ -31,29 +30,8 @@
 export default {
   data() {
     return {
-      msgList: [
-        {
-          avatar: "static/avatar/3.png",
-          userName: "用户123",
-          sendTime: "Jan 17, 2018",
-          lastContent:'我是机器人呀',
-          userId: "00000000000000000000000000000001"
-        },
-        {
-          avatar: "static/avatar/2.png",
-          userName: "用户956",
-          sendTime: "Jan 27, 2018",
-          lastContent:'我是机器人哦',
-          userId: "00000000000000000000000000000002"
-        },
-        {
-          avatar: "static/avatar/1.png",
-          userName: "用户U-N",
-          sendTime: "Jan 07, 2018",
-          lastContent:'我是机器人咯',
-          userId: "00000000000000000000000000000003"
-        }
-      ]
+      msgList: [],
+      logText:''
     };
   },
   methods: {
@@ -68,7 +46,9 @@ export default {
     }
   },
   mounted() {
-    // localStorage.setItem("msgList",JSON.stringify(this.msgList))
+    this.logText=localStorage.getItem('msgList')
+    console.log('消息缓存',this.logText)
+    this.getMsgList()
     setInterval(this.getMsgList,1000)
   },
 };

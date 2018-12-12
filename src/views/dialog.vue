@@ -96,7 +96,7 @@ export default {
       console.log("this.value.length", this.value.length);
       if (this.value.length) {
         var tempMsg={
-          headOwner: "http://resource.skqtec.com/webapp_tXXnFSRNNGDd",
+          headOwner: localStorage.getItem('myAvatar'),
           isSelf: true,
           contentType: "0",
           direction: "0",
@@ -108,11 +108,11 @@ export default {
         this.msgStore.push(tempMsg);
         localStorage.setItem('msgStore'+this.userId, JSON.stringify(this.msgStore))
 
-        this.axios.post(this.GLOBAL.commonServerSrc+'/CommonService/Messages/sendMessage',{
+        this.axios.get(this.GLOBAL.commonServerSrc+'/CommonService/Messages/sendMessage',{
           params:{
             data : JSON.stringify(tempMsg)
           }
-        },{
+        ,
           headers:{
             sessionid:localStorage.getItem('sessionId')
           }
@@ -164,18 +164,14 @@ export default {
   },
 };
 </script>
-<style>
-@import "http://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css";
+<style scoped>
 .bottomfixed {
   position: fixed;
   width: 100%;
   left: 0;
   bottom: 0;
   z-index: 1000;
-  /* background: #fff; */
-}
-
-.dialog-content{
+  background: #fff;
 }
 
 .msg-self-item {

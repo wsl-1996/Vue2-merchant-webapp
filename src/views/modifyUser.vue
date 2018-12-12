@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div class="div-container">
+       <v-appbar
+      iconvalue='keyboard_arrow_left'
+      barTitle='用户中心'
+    ></v-appbar>
     <mu-row>
       <mu-col span='3'><span>用户名</span></mu-col>
       <mu-col span='9'>
@@ -17,18 +21,20 @@
     </mu-row>
     <v-validatecode v-on:listenchild="showchilddata"></v-validatecode>
     <mu-row>
-      <mu-col></mu-col>
-      <mu-button @click="commitmodify">提交</mu-button>
+      <mu-col offset='7'>
+      <mu-button @click="commitmodify">提交</mu-button></mu-col>
     </mu-row>
   </div>
 </template>
 
 <script>
+import appbar from "@/common/_appbar";
 import md5 from "@/util/md5.js";
 import validatecode from "@/components/validateCode";
 export default {
   components: {
-    "v-validatecode": validatecode
+    "v-validatecode": validatecode,
+    "v-appbar": appbar,
   },
   data() {
     return {
@@ -66,45 +72,20 @@ export default {
           }
         )
         .then(res => {
-          console.log("setmyaccount res", res.data);
-          if (res.data.data == null) {
+          if (res.data.failed) {
+            this.$alert("修改失败，请重试！");
+          }else{
             this.$alert("修改成功");
-            this.account = "wl";
+            this.account = "";
             this.pass = "";
             this.verifycode = "";
             this.phone = "";
           }
         });
     },
-    getIdcode() {
-      if (this.phone)
-        this.axios
-          .get(
-            this.GLOBAL.commonServerSrc +
-              "/CommonService/SMS/getVerificationCode",
-            {
-              params: {
-                phone: this.phone
-              },
-              headers: {
-                sessionid: localStorage.getItem("sessionId")
-              }
-            }
-          )
-          .then(res => {
-            console.log("res", res);
-            if (res.data.failed == false) {
-              console.log("发送验证码成功");
-              this.idCodeType = true;
-              this.setIdCodeTimeout();
-            } else {
-              console.log("发送验证码失败");
-            }
-          });
-    },
     showchilddata(data) {
       console.log("data", data);
-      this.validatecode = data.code;
+      this.verifycode = data.code;
       this.phone= data.phone
 }
   },
@@ -115,4 +96,5 @@ export default {
 .text-field {
   width: 128px;
 }
+
 </style>

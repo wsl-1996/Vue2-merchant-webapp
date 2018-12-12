@@ -2,12 +2,13 @@
   <div>
     <mu-paper>
       <mu-data-table :columns='columns' :sort.sync="sort" :data='datalist'>
+
           <template slot-scope="scope">
             <td  @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.orderId}}</td>
-            <td @click="testclick">{{scope.row.userId}}</td>
-            <td>{{scope.row.sendAddress}}</td>
-            <td>{{scope.row.orderTime}}</td>
-            <td>{{scope.row.orderState}}</td>
+            <td @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.userId}}</td>
+            <td @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.sendAddress}}</td>
+            <td @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.orderTime}}</td>
+            <td @click="gotoOrderDetail(scope.row.orderId)">{{scope.row.orderState}}</td>           
           </template>
       </mu-data-table>
     </mu-paper>

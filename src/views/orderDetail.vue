@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-topbar iconvalue='chevron_left' barTitle='订单详情'></v-topbar>
+    <v-tipsShow btnText='Tips' :showText='showText'></v-tipsShow>
     <mu-row
       gutter
       class="row-container"
@@ -216,6 +217,7 @@
     <mu-row class="row-container">
       <mu-col span='3'>
         <mu-button
+        v-if="canModify"
           :color='editbtnColor'
           @click="edidOrder"
         >{{editbtnText}}</mu-button>
@@ -233,13 +235,17 @@
 import topbar from '@/common/_appbar.vue'
 import snackbar from "@/common/snackbar";
 import expressSort from "@/../static/ExpressCompanyTable.js";
+import tipsShow from '@/components/tipsShow.vue'
 export default {
   components: {
     "v-snackbar": snackbar,
-    "v-topbar":topbar
+    "v-topbar":topbar,
+    "v-tipsShow":tipsShow
   },
   data() {
     return {
+      canModify:false,
+      showText:'只有还没有发货的订单才能修改！',
       editbtnColor:'#3f51b5',
       expressSlots: [
         {
@@ -260,7 +266,6 @@ export default {
       expressList: ['宅急送'],
       expressType: false,
       editType: false,
-      canEdit: false,
       orderDetail: {},
       expressid: "",
       expresscompany: "",
@@ -279,29 +284,41 @@ export default {
           }
         })
         .then(response => {
+          if(response.data.failed){
+             this.$alert('获取详情失败，请重试！')
+          }else{
           var orderDetail = response.data.data.orderDetails;
           switch (orderDetail.orderState) {
             case 1: {
               orderDetail.orderState = "待付款";
-              this.canEdit = true;
+              this.canModify = true;
+              break;
             }
 
             case 2:
               orderDetail.orderState = "待发货";
+              this.canModify = true;
+              break;
             case 3:
               orderDetail.orderState = "待收货";
+              break;
             case 4:
               orderDetail.orderState = "待评价";
+              break;
             case 5:
               orderDetail.orderState = "已评价";
+              break;
             case 6:
               orderDetail.orderState = "已取消";
+              break;
           }
           if (orderDetail.trackid == null) {
             orderDetail.trackid = "暂无物流信息";
           }
           this.orderDetail = orderDetail;
           console.log("orderDetail", orderDetail);
+          }
+
         })
         .catch(error => {
           console.log("getorderdetails error", error);
@@ -324,8 +341,10 @@ export default {
             }
           })
           .then((req, res) => {
-            if (res.data.data.deliverResult) {
-              console.log("修改订单成功");
+            if (res.data.failed){
+              this.$alert('修改失败，请重试！')
+            }else{
+              this.$alert('修改成功！')
               this.editbtnColor = '#00e5ff'
             this.editbtnText = "修改完成";
             }
@@ -341,11 +360,12 @@ export default {
             trackid: this.expresscompany
           }
         })
-        .then((req, res) => {
-          if (res.data.data.deliverResult) {
-            console.log("发货成功");
-            // this.expressType = false
-          }
+        .then((res) => {
+           if (res.data.failed){
+              this.$alert('发货失败，请重试！')
+            }else{
+              this.$alert('发货成功！')
+            }
         });
     },
     editExpress() {

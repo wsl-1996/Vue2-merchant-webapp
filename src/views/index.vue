@@ -1,6 +1,6 @@
 <template>
     <div>
-       <v-topbar :iconvalue='iconvalue' :barTitle='barTitle'></v-topbar>
+       <v-topbar  :barTitle='barTitle'></v-topbar>
        <router-view></router-view>
        <v-navigation></v-navigation>
     </div>
