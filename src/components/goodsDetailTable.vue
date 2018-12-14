@@ -184,7 +184,7 @@
             color="#00bcd4"
           >
             <label for="slideImgUpload">
-              上传图片
+              上传滑动图片
             </label>
             <mu-icon value='add'></mu-icon>
           </mu-chip>
@@ -230,7 +230,7 @@
             color="#00acc1"
           >
             <label for="contentImgUpload">
-              上传图片
+              上传内容图片
             </label>
             <mu-icon value='add'></mu-icon>
           </mu-chip>
@@ -307,6 +307,26 @@
       </mu-col>
     </mu-row>
 
+      <mu-row
+      class="row-container"
+      gutter
+    >
+      <mu-col span="3">
+        <div class="content">快递价格</div>
+      </mu-col>
+      <mu-col span="9">
+        <div class="content">
+          <span v-if="editFlag">{{productInfo.carriagePrice}}</span>
+          <mu-text-field
+            type='number'
+            v-else
+            v-model="productInfo.carriagePrice"
+          ></mu-text-field>
+        </div>
+      </mu-col>
+    </mu-row>
+
+
     <mu-row
       class="row-container"
       gutter
@@ -375,7 +395,7 @@
           color="#00838f"
           @click="addParameter"
         >
-          添加样式
+          添加参数
           <mu-icon value='add'></mu-icon>
         </mu-chip>
       </mu-col>
@@ -486,7 +506,7 @@
       </mu-col>
     </mu-row>
 
- <!-- <mu-row
+    <!-- <mu-row
       class="row-container"
       gutter
     >
@@ -562,8 +582,8 @@ export default {
   props: ["productId"],
   data() {
     return {
-      onlineTimePost:'',
-      offlineTimePost:'',
+      onlineTimePost: "",
+      offlineTimePost: "",
       normal: {
         message: "Hello !",
         open: false,
@@ -586,7 +606,7 @@ export default {
         }
       },
       productTypeText: ["全新", "闲置", "虚拟物品", "服务"],
-      productStateText:['未上线','已上线','已下线'],
+      productStateText: ["未上线", "已上线", "已下线"],
       parameterKeyArr: [],
       parameterValueArr: []
     };
@@ -626,10 +646,9 @@ export default {
           offlineTime: new Date(),
           saleVolumeHistory: 0,
           saleVolumeMonthly: 0,
-          productStyle: "",
-          stylePrice: "",
           returnCashRate: 0,
-          returnCashRateLinksender: 0
+          returnCashRateLinksender: 0,
+          carriagePrice:''
         };
         this.sildeImgArr = [];
         this.contentImgArr = [];
@@ -667,7 +686,7 @@ export default {
             this.priceExplain = JSON.parse(this.productInfo.afterSale)[
               "价格说明"
             ];
-            // this.productInfo.productState 
+            // this.productInfo.productState
             this.productInfo.returnCashRateLinksender =
               this.productInfo.returnCashRateLinksender * 100;
             this.productInfo.returnCashRate =
@@ -689,13 +708,12 @@ export default {
             this.productInfo.offlineTimeShow = utils.timestampToTime(
               this.productInfo.offlineTime
             );
-            this.onlineTimePost = this.productInfo.onlineTime
-            this.offlineTimePost = this.productInfo.offlineTime
+            this.onlineTimePost = this.productInfo.onlineTime;
+            this.offlineTimePost = this.productInfo.offlineTime;
             this.productInfo.onlineTime = new Date(this.productInfo.onlineTime);
             this.productInfo.offlineTime = new Date(
               this.productInfo.offlineTime
             );
-            console.log('获取列表时间戳之后转换的new date',this.productInfo.onlineTime,this.productInfo.offlineTime)
           });
       }
     },
@@ -715,9 +733,9 @@ export default {
       postGoodsDetail.afterSaleInfo = {};
       postGoodsDetail.afterSaleInfo["售后服务"] = this.afterSale;
       postGoodsDetail.afterSaleInfo["价格说明"] = this.priceExplain;
-      if(postGoodsDetail.productStyle=[]){
-        postGoodsDetail.productStyle.push('默认款')
-        postGoodsDetail.stylePrice.push(postGoodsDetail.price)
+      if ((postGoodsDetail.productStyle.length == 0)) {
+        postGoodsDetail.productStyle.push("默认款");
+        postGoodsDetail.stylePrice.push(postGoodsDetail.price);
       }
       postGoodsDetail.productInfo = {};
       for (var i in this.parameterKeyArr) {
@@ -747,34 +765,39 @@ export default {
               productStyle: JSON.stringify(postGoodsDetail.productStyle),
               returnCashRate: postGoodsDetail.returnCashRate / 100,
               returnCashRateLinksender:
-              postGoodsDetail.returnCashRateLinksender / 100,
+                postGoodsDetail.returnCashRateLinksender / 100,
               packStand: postGoodsDetail.packStand,
               stylePrice: JSON.stringify(postGoodsDetail.stylePrice),
               productClassifyCode: "001100",
-              carriagePrice: 10,
+              carriagePrice: this.productInfo.carriagePrice,
               productType: postGoodsDetail.productType,
-              productState:postGoodsDetail.productState
+              productState: postGoodsDetail.productState
             }
           })
           .then(response => {
             if (response.data.failed) {
-              this.$alert("修改失败，请重试！");
+              this.$alert("失败，请重试！");
             } else {
-              this.$alert("修改成功！");
+              if (this.productId == -1) {
+                this.$alert("创建成功！");
+                this.$router.back()
+              } else {
+                this.$alert("修改成功！");
+                // this.$router.back() 
+              }
             }
           });
       }
     },
     datechangeOn(e) {
-      console.log('time oneline',e,e.getTime())
-      this.onlineTimePost = e.getTime()
-      this.productInfo.onlineTimeShow = utils.timestampToTime(e); 
+      console.log("time oneline", e, e.getTime());
+      this.onlineTimePost = e.getTime();
+      this.productInfo.onlineTimeShow = utils.timestampToTime(e);
     },
     datechangeOff(e) {
-      console.log('time offline',e)
-      this.offlineTimePost = e.getTime()
-      this.productInfo.offlineTimeShow =utils.timestampToTime(e);
-
+      console.log("time offline", e);
+      this.offlineTimePost = e.getTime();
+      this.productInfo.offlineTimeShow = utils.timestampToTime(e);
     },
     cancelParamter(e, tempArr1, tempArr2) {
       var delindex = e.target.id;
@@ -839,15 +862,19 @@ export default {
     uploader(data, observer, key) {
       console.log(data);
       this.axios
-        .get(this.GLOBAL.commonServerSrc+"/CommonService/QiNiuYun/getUploadToken", {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Access-Control-Allow-Origin": "*"
-          },
-          params: {
-            fileKey: key
+        .get(
+          this.GLOBAL.commonServerSrc +
+            "/CommonService/QiNiuYun/getUploadToken",
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Access-Control-Allow-Origin": "*"
+            },
+            params: {
+              fileKey: key
+            }
           }
-        })
+        )
         .then(response => {
           console.log(response);
           var token = response["data"]["data"]["upToken"];
@@ -928,11 +955,9 @@ export default {
       } else if (this.productInfo.stockCount < 0) {
         this.$alert("库存不能小于零");
         return false;
-      }else if(this.productInfo.productName == '' ){
-
-      } 
-      
-      else {
+      } else if (this.productInfo.productName == "" && this.productInfo.price == "") {
+        return false
+      } else {
         return true;
       }
     }
@@ -945,9 +970,6 @@ export default {
 .detail-img {
   width: 90px;
   height: 90px;
-}
-.content {
-  /* border: 1px solid #ccc; */
 }
 .img-container {
   position: relative;
