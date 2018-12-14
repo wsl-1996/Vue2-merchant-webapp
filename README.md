@@ -1,4 +1,4 @@
-# cli-first-project
+# Vue2-merchant-webapp-project
 
 > A Vue.js project
 

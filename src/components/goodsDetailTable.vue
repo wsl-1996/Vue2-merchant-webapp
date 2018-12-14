@@ -715,7 +715,10 @@ export default {
       postGoodsDetail.afterSaleInfo = {};
       postGoodsDetail.afterSaleInfo["售后服务"] = this.afterSale;
       postGoodsDetail.afterSaleInfo["价格说明"] = this.priceExplain;
-
+      if(postGoodsDetail.productStyle=[]){
+        postGoodsDetail.productStyle.push('默认款')
+        postGoodsDetail.stylePrice.push(postGoodsDetail.price)
+      }
       postGoodsDetail.productInfo = {};
       for (var i in this.parameterKeyArr) {
         postGoodsDetail.productInfo[
