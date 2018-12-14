@@ -47,7 +47,6 @@ export default {
           var orderList = response.data.data.orders;
           console.log("orderlist", orderList);
           orderList.forEach(element => {
-            console.log('element.state',element)
              switch (element.state) {
             case 1: 
               element.state = "待付款";

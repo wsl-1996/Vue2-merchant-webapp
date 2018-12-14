@@ -98,9 +98,9 @@
           button
         >
           <mu-list-item-action>
-            <img :src="item.product_fist_img">
+            <img class="productImg" :src="item.product_fist_img">
           </mu-list-item-action>
-          <mu-list-item-content>
+          <mu-list-item-content class="billcontainer">
             <mu-list-item-title>{{item.product_name}}</mu-list-item-title>
             <mu-list-item-sub-title>
               <span class='date-span'>{{item.cashback_date}}</span>
@@ -188,5 +188,12 @@ export default {
 }
 .divider-content{
   margin-top: 10px
+}
+.productImg{
+  width: 80px;
+  height: 80px;
+}
+.billcontainer{
+  margin-left: 15px;
 }
 </style>

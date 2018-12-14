@@ -15,10 +15,8 @@ ws.onclose = function(evt) {
 };
 
 ws.onmessage = function(evt) {
-	var msgStore,tempMsg,msgFrom,msgList,tempmsgList
-	
-	console.log("ws.js this is " ,this);
-	console.log("Received Message: " , evt.data);
+	var msgStore,tempMsg,msgFrom,msgList,tempmsgList,contentText
+	console.log("接收到的信息 " , evt.data);
 	tempMsg=JSON.parse(evt.data)
 	msgFrom = tempMsg['messageFrom']
 	tempMsg['isSelf'] = false
@@ -28,28 +26,31 @@ ws.onmessage = function(evt) {
 	  msgStore = JSON.parse(localStorage.getItem('msgStore'+msgFrom))
 	}
 	msgStore.push(tempMsg)
-	console.log('msgStore',msgStore)
 	localStorage.setItem('msgStore'+msgFrom,JSON.stringify(msgStore))
-	console.log('缓存消息：',JSON.parse(localStorage.getItem('msgStore'+msgFrom)))
 	
-
 	msgList = JSON.parse(localStorage.getItem('msgList'))
 	if(msgList == null){
 		msgList = []
 	}
+	if(tempMsg.contentType = '0'){
+		 
+		 contentText = tempMsg.messageContent
+	}else{
+		contentText = '【图片】'
+	}
 	tempmsgList = {
 		avatar: tempMsg.headOwner,
-        userName: "用户"+tempMsg.messageFrom,
+        userNick: tempMsg.userNick,
         sendTime: tempMsg.createTime,
 		userId: tempMsg.messageFrom,
-		lastContent:tempMsg.messageContent,
+		lastContent:contentText,
 		isRead: false
 	}
 	var existlist = false
 	for(var item of msgList){
 		if(item.userId == tempMsg.messageFrom){
 			item.sendTime = tempMsg.createTime
-			item.lastContent = tempMsg.messageContent
+			item.lastContent = contentText
 			item.isRead = false
 			existlist = true
 		}		

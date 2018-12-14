@@ -455,7 +455,7 @@
       </mu-col>
       <mu-col span="9">
         <div class="content">
-          <span v-if="editFlag">{{productInfo.onlineTime}}</span>
+          <span v-if="editFlag">{{productInfo.onlineTimeShow}}</span>
           <mu-date-picker
             class="date-picker-container"
             v-else
@@ -475,7 +475,7 @@
       </mu-col>
       <mu-col span="9">
         <div class="content">
-          <span v-if="editFlag">{{productInfo.offlineTime}}</span>
+          <span v-if="editFlag">{{productInfo.offlineTimeShow}}</span>
           <mu-date-picker
             class="date-picker-container"
             v-else
@@ -486,7 +486,7 @@
       </mu-col>
     </mu-row>
 
- <mu-row
+ <!-- <mu-row
       class="row-container"
       gutter
     >
@@ -511,7 +511,7 @@
           </mu-flex>
         </div>
       </mu-col>
-    </mu-row>
+    </mu-row> -->
 
     <mu-row
       class="row-container"
@@ -562,6 +562,8 @@ export default {
   props: ["productId"],
   data() {
     return {
+      onlineTimePost:'',
+      offlineTimePost:'',
       normal: {
         message: "Hello !",
         open: false,
@@ -687,10 +689,13 @@ export default {
             this.productInfo.offlineTimeShow = utils.timestampToTime(
               this.productInfo.offlineTime
             );
+            this.onlineTimePost = this.productInfo.onlineTime
+            this.offlineTimePost = this.productInfo.offlineTime
             this.productInfo.onlineTime = new Date(this.productInfo.onlineTime);
             this.productInfo.offlineTime = new Date(
               this.productInfo.offlineTime
             );
+            console.log('获取列表时间戳之后转换的new date',this.productInfo.onlineTime,this.productInfo.offlineTime)
           });
       }
     },
@@ -734,8 +739,8 @@ export default {
               productFistImg: postGoodsDetail.productFistImg,
               productSlideImg: postGoodsDetail.productSlideImg,
               productContentImg: postGoodsDetail.productContentImg,
-              onlineTime: postGoodsDetail.onlineTime.getTime(),
-              offlineTime: postGoodsDetail.offlineTime.getTime(),
+              onlineTime: this.onlineTimePost,
+              offlineTime: this.offlineTimePost,
               productStyle: JSON.stringify(postGoodsDetail.productStyle),
               returnCashRate: postGoodsDetail.returnCashRate / 100,
               returnCashRateLinksender:
@@ -757,17 +762,16 @@ export default {
           });
       }
     },
-    datechangeOn() {
-      console.log('time changed',this.productInfo.onlineTime)
-      this.productInfo.onlineTimeShow = utils.timestampToTime(
-        this.productInfo.onlineTime.getTime()
-      );
+    datechangeOn(e) {
+      console.log('time oneline',e,e.getTime())
+      this.onlineTimePost = e.getTime()
+      this.productInfo.onlineTimeShow = utils.timestampToTime(e); 
     },
-    datechangeOff() {
-      console.log('time changed',this.productInfo.offlineTime)
-      this.productInfo.offlineTimeShow = utils.timestampToTime(
-        this.productInfo.offlineTime.getTime()
-      );
+    datechangeOff(e) {
+      console.log('time offline',e)
+      this.offlineTimePost = e.getTime()
+      this.productInfo.offlineTimeShow =utils.timestampToTime(e);
+
     },
     cancelParamter(e, tempArr1, tempArr2) {
       var delindex = e.target.id;
@@ -832,7 +836,7 @@ export default {
     uploader(data, observer, key) {
       console.log(data);
       this.axios
-        .get("http://47.99.78.252:8080/CommonService/QiNiuYun/getUploadToken", {
+        .get(this.GLOBAL.commonServerSrc+"/CommonService/QiNiuYun/getUploadToken", {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "Access-Control-Allow-Origin": "*"

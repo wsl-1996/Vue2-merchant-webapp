@@ -223,8 +223,7 @@ export default {
     },
     linkToWebsocket(){
         console.log('建立socket连接,监听消息')
-        console.log('this.$root.webSocket',this.$root.webSocket.ws)
-      var data = {};
+        var data = {};
         data["messageFrom"] = localStorage.getItem('merchantId');
         data["messageType"]="-1";
         this.$root.webSocket.ws.send(JSON.stringify(data));  

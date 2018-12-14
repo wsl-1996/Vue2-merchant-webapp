@@ -152,11 +152,29 @@ export default {
     },
     createGoods() {
       this.$router.push("/goodsDetail/-1");
-    }
+    },
+    getMyInfo() {
+      this.axios
+        .get(this.GLOBAL.webappServerSrc + "/WebAppService/my/getmyinfo", {
+          params: {
+            merchantid: localStorage.getItem("merchantId"),
+            page: "0"
+          },
+          headers: {
+            sessionid: localStorage.getItem("sessionId")
+          }
+        })
+        .then(res => {
+          console.log("getMyInfo res", res.data);
+          this.merchantInfo = res.data.data.merchant;
+          localStorage.setItem('myAvatar',this.merchantInfo.headImg)
+          localStorage.setItem('myNick',this.merchantInfo.name)
+        });
+    },
   },
   mounted() {
     this.getProductList()
-    console.log(this.GLOBAL.webappServerSrc)
+    this.getMyInfo()
   },
 };
 </script>

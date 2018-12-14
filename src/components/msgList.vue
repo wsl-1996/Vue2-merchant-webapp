@@ -12,7 +12,7 @@
               </mu-avatar>
             </mu-list-item-action>
             <mu-list-item-content>
-              <mu-list-item-title class="content">{{item.userName}}</mu-list-item-title>              
+              <mu-list-item-title class="content">{{item.userNick}}</mu-list-item-title>              
               <mu-list-item-sub-title class="content">{{item.lastContent}}</mu-list-item-sub-title>
               <mu-list-item-sub-title class="content">{{item.sendTime}}</mu-list-item-sub-title>
             </mu-list-item-content>
@@ -47,7 +47,6 @@ export default {
   },
   mounted() {
     this.logText=localStorage.getItem('msgList')
-    console.log('消息缓存',this.logText)
     this.getMsgList()
     setInterval(this.getMsgList,1000)
   },

@@ -28,6 +28,7 @@ export default{
           console.log("getMyInfo res", res.data);
           this.merchantInfo = res.data.data.merchant;
           localStorage.setItem('myAvatar',this.merchantInfo.headImg)
+          localStorage.setItem('myNick',this.merchantInfo.name)
         });
     },
     },

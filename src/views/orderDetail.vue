@@ -254,20 +254,18 @@ export default {
           values: (() => {
             var arr = [];
             for (var key in expressSort.express_map.common) {
-              console.log("keys", key, expressSort.express_map.common[key]);
-              arr.push(expressSort.express_map.common[key]);
-              console.log('arr',arr)
-              
+              arr.push(expressSort.express_map.common[key]+'-'+key);
             }
             return arr;
           })()
         }
       ],
-      expressList: ['宅急送'],
+      expressList: ['顺丰速运'],
       expressType: false,
       editType: false,
       orderDetail: {},
       expressid: "",
+      trackcode:'',
       expresscompany: "",
       editbtnText: "修改订单",
       orderId: this.$route.params.orderId,
@@ -356,8 +354,8 @@ export default {
         .get(this.GLOBAL.webappServerSrc + "/WebAppService/orders/delivergoods", {
           params: {
             orderid: this.orderId,
-            trackcode: this.expressid,
-            trackid: this.expresscompany
+            trackcode: this.trackcode,
+            trackid: this.expressid
           }
         })
         .then((res) => {
@@ -372,9 +370,10 @@ export default {
       this.expressType = true;
     },
     expressChange(value,index){
-        
+        value.indexOf('-')
+        this.trackcode = value.substring(value.indexOf('-')+1)
         this.expresscompany = value
-        console.log(this.expresscompany)
+        console.log(this.expresscompany,this.trackcode)
     }
   },
   mounted() {
